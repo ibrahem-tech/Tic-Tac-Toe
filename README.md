@@ -1,5 +1,3 @@
-
-
 Getting Started
 Clone the Repo
 git clone https://github.com/ibrahem-tech/Tic-Tac-Toe.git
