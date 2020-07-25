@@ -1,6 +1,6 @@
 Getting Started
-Clone the Repo
-git clone https://github.com/ibrahem-tech/Tic-Tac-Toe.git
+**Clone the Repo:
+**git clone https://github.com/ibrahem-tech/Tic-Tac-Toe.git**
 Install the dependencies
 cd tic-tac-toe-online
 npm install
