@@ -29,6 +29,14 @@ io.on('connection', socket => {
         socket.join(gameId);
         socket.emit('playerCreated', {player});
         socket.emit('gameUpdated', {game})
+
+        
+        socket.emit('notification', {
+            message: `The game gas been created. Game id is ${gameId}. Send this to your feiend to join.`
+        });
+        socket.emit('notification', {
+            message: 'Wating for opponent...'
+        });
    })
 });
 

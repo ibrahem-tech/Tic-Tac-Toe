@@ -5,9 +5,10 @@ import Board from '../components/Board';
 let socket;
 
 const Game = ({name, gameId}) => {
-    const SERVER_ENDPOINT = 'http://localhost:7000'
-    const [player, setPlayer] = useState({})
-    const [game, setGame] = useState({})
+    const SERVER_ENDPOINT = 'http://localhost:7000';
+    const [player, setPlayer] = useState({});
+    const [game, setGame] = useState({});
+    const [notification, setNotification] = useState([]);
     
     
 
@@ -22,6 +23,15 @@ const Game = ({name, gameId}) => {
         }
 
     }, [SERVER_ENDPOINT, gameId, name]);
+
+
+    useEffect(() => {
+        socket.on('notification', data => {
+          const { message = '' } = data;
+          notification.push(message);
+          setNotification([...notification]);
+        });
+      }, [notification]);
 
     useEffect(()=>{
         socket.on('playerCreated', data => {
@@ -45,7 +55,9 @@ const Game = ({name, gameId}) => {
         {game && <h5>Game ID: {game.id} </h5>}
         <hr/>
         <Board player={player}  game={game} onSquareClick={onSquareClick}/>
-
+        {notification.map((msg, index) => (
+        <p key={index}>{msg}</p>
+      ))}
     </div>
     );
 };
