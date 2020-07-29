@@ -12,20 +12,18 @@ const Game = ({name, gameId}) => {
     
     
 
-    useEffect(()=>{
-        const event = gameId ? 'JoinGame' : 'createGame';
-        socket = new io(SERVER_ENDPOINT);
-        socket.emit(event, {name});
-
-        return() =>{
-            socket.emit('disconnect');
-            socket.off();
-        }
-
-    }, [SERVER_ENDPOINT, gameId, name]);
-
-
     useEffect(() => {
+        const event = gameId ? 'joinGame' : 'createGame';
+        socket = new io(SERVER_ENDPOINT);
+        socket.emit(event, { name, gameId });
+    
+        return () => {
+          socket.emit('disconnect');
+          socket.off();
+        };
+      }, [SERVER_ENDPOINT, gameId, name]);
+    
+      useEffect(() => {
         socket.on('notification', data => {
           const { message = '' } = data;
           notification.push(message);
@@ -33,29 +31,42 @@ const Game = ({name, gameId}) => {
         });
       }, [notification]);
 
-    useEffect(()=>{
+      useEffect(() => {
         socket.on('playerCreated', data => {
-            const { player } = data;
-            setPlayer(player)
-        })
-
+          const { player } = data;
+          setPlayer(player);
+        });
+    
         socket.on('gameUpdated', data => {
-            const { game } = data;
-            setGame(game)
-        })
+          const { game } = data;
+          setGame(game);
+        });
     })
 
     const onSquareClick =(value) =>{
         console.log(`Player ${player.name} clicked ${value}`)
     }
     
+    const turnMessage = 
+    game.playerTurn === player.id ? 'Your move' : 'Oponnunt turn';
+
     return(
-    <div>
-        {player && <h5> Welcome {player.name}. <strong>You are playing {player.symbol}</strong> </h5>}
+        <div>
+        {player && (
+          <h5>
+            Welcome {player.name}.{' '}
+            <strong>You are playing {player.symbol}</strong>
+          </h5>
+        )}
+        {game.status === 'playing' && <h5>{turnMessage}</h5>}
         {game && <h5>Game ID: {game.id} </h5>}
         <hr/>
-        <Board player={player}  game={game} onSquareClick={onSquareClick}/>
-        {notification.map((msg, index) => (
+        <Board
+        player={player}
+        game={game}
+        onSquareClick={onSquareClick}
+      />
+      {notification.map((msg, index) => (
         <p key={index}>{msg}</p>
       ))}
     </div>
