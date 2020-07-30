@@ -4,7 +4,7 @@
   "description": "tic tac toe game ",
   "main": "src/app.js",
   "scripts": {
-    "dev":"nodemon",
+    "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "npm run dev --prefix server",
     "client": "npm start --prefix client"
