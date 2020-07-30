@@ -14,7 +14,11 @@
   "devDependencies": {
     "nodemon": "^2.0.4"
   },
+
   "dependencies": {
     "socket.io": "^2.3.0"
+  },
+  "engines": {
+    "node": "12.18. 2"
   }
 }
