@@ -18,9 +18,6 @@
   "devDependencies": {
     "react-scripts": "1.0.11"
   },
-  "engines": {
-    "node": "12.18.2"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
