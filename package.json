@@ -1,0 +1,21 @@
+{
+    "name": "tic-tac-toe-online",
+    "version": "1.0.0",
+    "description": "Multiplayer Tic Tac Toe App",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "install": "npm install --prefix server && npm install --prefix client",
+      "server": "npm run dev --prefix server",
+      "client": "npm start --prefix client"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/ibrahem-tech/Tic-Tac-Toe.git"
+    },
+    "author": "Ebrahim Rian",
+    "license": "",
+    "bugs": {
+      "url": "https://github.com/ibrahem-tech/Tic-Tac-Toe/issues"
+    },
+    "homepage": "https://github.com/ibrahem-tech/Tic-Tac-Toe"
+  }
