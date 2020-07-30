@@ -1,15 +1,16 @@
 import React from 'react';
 
-const Square = ({value, index, onClick, enabled, canPlay}) => {
+const Square = ({value, onClick, enabled, canPlay, isWinnerSquare}) => {
     const canSelect = !value && enabled && canPlay;
     const btnClassName = canSelect ? '' : 'disabled';
+    const winningClass = isWinnerSquare ? 'square-win' : '';
     return(
-        <div className="square">
+        <div className={`square ${winningClass}`}>
             <button onClick={onClick}
              className={`square-item ${btnClassName}`} 
              disabled={!canSelect}
              >
-                {index}
+                {value}
                 </button>
 
         </div>

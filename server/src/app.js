@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const server = http.createServer();
 const io = socketIO(server);
 
-const {makeKey} = require('./utils');
+const {makeKey, checkWinner} = require('./utils');
 const {createGame, getGame, updateGame} = require('./data/games')
 const {createPlayer, getPlayer, removePlayer} = require('./data/players');
 const games = require('./data/games');
@@ -73,7 +73,45 @@ io.on('connection', socket => {
        });
      });
 
-   
+   socket.on('moveMade', data => { 
+       const {player, square, gameId} = data;
+       //Get the game
+       const game = getGame(gameId);
+       // FIXME : Check if game is valid and move is valid
+
+       //Update the board
+       const {playBoard =[], playerTurn, player1, player2 } = game;
+       playBoard[square] = player.symbol;
+
+       //Update the player turn 
+       const nextTurnId = playerTurn === player1 ? player2 : player1;
+       //Update the game object
+       game.playerTurn = nextTurnId;
+       game.playBoard = playBoard;
+       updateGame(game);
+
+       //Broadcast game updated to everyone
+       io.in(gameId).emit('gameUpdated', {game})
+
+       //Checking winning or draw
+       const hasWon = checkWinner(playBoard);
+       if(hasWon) {
+           const winner = { ...hasWon, player}
+           game.status = 'gameOver';
+           io.in(gameId).emit('gameUpdated', {game});
+           io.in(gameId).emit('gameEnd', {winner});
+           return;
+       }
+        // Checking Draw
+    const emptySquareIndex = playBoard.findIndex(item => item === null);
+    if (emptySquareIndex === -1) {
+      game.status = 'gameOver';
+      updateGame(game);
+      io.in(gameId).emit('gameUpdated', { game });
+      io.in(gameId).emit('gameEnd', { winner: null });
+      return;
+    }
+   });
 });
 
 
